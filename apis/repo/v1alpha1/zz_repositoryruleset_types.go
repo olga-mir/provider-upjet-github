@@ -525,6 +525,76 @@ type RequiredCheckParameters struct {
 	IntegrationID *int64 `json:"integrationId,omitempty" tf:"integration_id,omitempty"`
 }
 
+type RequiredCodeScanningInitParameters struct {
+
+	// (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+	// Tools that must provide code scanning results for this rule to pass.
+	RequiredCodeScanningTool []RequiredCodeScanningToolInitParameters `json:"requiredCodeScanningTool,omitempty" tf:"required_code_scanning_tool,omitempty"`
+}
+
+type RequiredCodeScanningObservation struct {
+
+	// (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+	// Tools that must provide code scanning results for this rule to pass.
+	RequiredCodeScanningTool []RequiredCodeScanningToolObservation `json:"requiredCodeScanningTool,omitempty" tf:"required_code_scanning_tool,omitempty"`
+}
+
+type RequiredCodeScanningParameters struct {
+
+	// (Block Set, Min: 1) Actions code scanning tools that are required. Multiple can be defined. (see below for nested schema)
+	// Tools that must provide code scanning results for this rule to pass.
+	// +kubebuilder:validation:Optional
+	RequiredCodeScanningTool []RequiredCodeScanningToolParameters `json:"requiredCodeScanningTool" tf:"required_code_scanning_tool,omitempty"`
+}
+
+type RequiredCodeScanningToolInitParameters struct {
+
+	// (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+	// The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+	AlertsThreshold *string `json:"alertsThreshold,omitempty" tf:"alerts_threshold,omitempty"`
+
+	// (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+	// The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+	SecurityAlertsThreshold *string `json:"securityAlertsThreshold,omitempty" tf:"security_alerts_threshold,omitempty"`
+
+	// (String) The name of a code scanning tool.
+	// The name of a code scanning tool
+	Tool *string `json:"tool,omitempty" tf:"tool,omitempty"`
+}
+
+type RequiredCodeScanningToolObservation struct {
+
+	// (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+	// The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+	AlertsThreshold *string `json:"alertsThreshold,omitempty" tf:"alerts_threshold,omitempty"`
+
+	// (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+	// The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+	SecurityAlertsThreshold *string `json:"securityAlertsThreshold,omitempty" tf:"security_alerts_threshold,omitempty"`
+
+	// (String) The name of a code scanning tool.
+	// The name of a code scanning tool
+	Tool *string `json:"tool,omitempty" tf:"tool,omitempty"`
+}
+
+type RequiredCodeScanningToolParameters struct {
+
+	// (String) The severity level at which code scanning results that raise alerts block a reference update. Can be one of: none, errors, errors_and_warnings, all.
+	// The severity level at which code scanning results that raise alerts block a reference update. Can be one of: `none`, `errors`, `errors_and_warnings`, `all`.
+	// +kubebuilder:validation:Optional
+	AlertsThreshold *string `json:"alertsThreshold" tf:"alerts_threshold,omitempty"`
+
+	// (String) The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: none, critical, high_or_higher, medium_or_higher, all.
+	// The severity level at which code scanning results that raise security alerts block a reference update. Can be one of: `none`, `critical`, `high_or_higher`, `medium_or_higher`, `all`.
+	// +kubebuilder:validation:Optional
+	SecurityAlertsThreshold *string `json:"securityAlertsThreshold" tf:"security_alerts_threshold,omitempty"`
+
+	// (String) The name of a code scanning tool.
+	// The name of a code scanning tool
+	// +kubebuilder:validation:Optional
+	Tool *string `json:"tool" tf:"tool,omitempty"`
+}
+
 type RequiredDeploymentsInitParameters struct {
 
 	// (List of String) The environments that must be successfully deployed to before branches can be merged.
@@ -580,6 +650,10 @@ type RulesInitParameters struct {
 	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	PullRequest []RulesPullRequestInitParameters `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
+
+	// (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+	// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+	RequiredCodeScanning []RequiredCodeScanningInitParameters `json:"requiredCodeScanning,omitempty" tf:"required_code_scanning,omitempty"`
 
 	// (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
 	// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
@@ -643,6 +717,10 @@ type RulesObservation struct {
 	// (Block List, Max: 1) Require all commits be made to a non-target branch and submitted via a pull request before they can be merged. (see below for nested schema)
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	PullRequest []RulesPullRequestObservation `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
+
+	// (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+	// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+	RequiredCodeScanning []RequiredCodeScanningObservation `json:"requiredCodeScanning,omitempty" tf:"required_code_scanning,omitempty"`
 
 	// (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
 	// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
@@ -714,6 +792,11 @@ type RulesParameters struct {
 	// Require all commits be made to a non-target branch and submitted via a pull request before they can be merged.
 	// +kubebuilder:validation:Optional
 	PullRequest []RulesPullRequestParameters `json:"pullRequest,omitempty" tf:"pull_request,omitempty"`
+
+	// (Block List, Max: 1) Define which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated. Multiple code scanning tools can be specified. (see below for nested schema)
+	// Choose which tools must provide code scanning results before the reference is updated. When configured, code scanning must be enabled and have results for both the commit and the reference being updated.
+	// +kubebuilder:validation:Optional
+	RequiredCodeScanning []RequiredCodeScanningParameters `json:"requiredCodeScanning,omitempty" tf:"required_code_scanning,omitempty"`
 
 	// (Block List, Max: 1) Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule. (see below for nested schema)
 	// Choose which environments must be successfully deployed to before branches can be merged into a branch that matches this rule.
